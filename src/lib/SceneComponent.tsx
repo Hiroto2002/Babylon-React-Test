@@ -60,5 +60,11 @@ export default ({
     onSceneReady,
   ])
 
-  return <canvas ref={reactCanvas} {...rest} />
+  return (
+    <canvas
+      ref={reactCanvas}
+      {...rest}
+      style={{ width: '90vw', height: '90vh' }}
+    />
+  )
 }

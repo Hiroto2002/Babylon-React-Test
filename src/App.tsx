@@ -1,23 +1,21 @@
 import * as BABYLON from '@babylonjs/core'
 import { Scene } from '@babylonjs/core/scene'
-import SceneComponent from './components/SceneComponent'
-import '@babylonjs/loaders'
+import SceneComponent from './lib/SceneComponent'
+import '@babylonjs/loaders' // これがないと読み込めない
+import { Engine } from '@babylonjs/core/Engines/engine'
 
 const onSceneReady = (scene: Scene) => {
   // カメラの作成, 回転
   const camera = new BABYLON.ArcRotateCamera(
     'camera',
-    -2.5,
-    2,
+    -1.5,
     1.5,
+    0.8,
     new BABYLON.Vector3(0, 0, 0),
     scene,
   )
-  if (camera.autoRotationBehavior) {
-    camera.useAutoRotationBehavior = true
-    camera.autoRotationBehavior.idleRotationSpeed *= 5
-    camera.attachControl(SceneComponent, true)
-  }
+  camera.attachControl(SceneComponent, true)
+  camera.minZ = 0.001
 
   // ライトの作成
   const light = new BABYLON.HemisphericLight(
@@ -29,11 +27,14 @@ const onSceneReady = (scene: Scene) => {
 
   // SoccerBall.babylonからノードの読み込み
   const assetsManager = new BABYLON.AssetsManager(scene)
-  assetsManager.addMeshTask('task', '', '/assets/', 'iPhone.glb')
+  const iPhone = assetsManager.addMeshTask('task', '', '/assets/', 'iPhone.glb')
   // assetsManager.addMeshTask("task", "SoccerBall", iPhoneAsset);
 
   assetsManager.load()
   // BABYLON.SceneLoader.ImportMeshAsync("", "/assets/","scene.babylon");
+
+  // //Begin animation - object to animate, first frame, last frame and loop if true
+  // // アニメーションを開始する
 }
 
 export default function App() {
